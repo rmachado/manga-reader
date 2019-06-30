@@ -2,11 +2,11 @@ import * as React from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { Typography } from '@material-ui/core';
 
-function HomeScreen(props: RouteComponentProps) {
+function SettingsScreen(props: RouteComponentProps) {
 
   return (
-    <Typography variant="h4">My Library</Typography>
+    <Typography variant="h4">Settings</Typography>
   )
 }
 
-export default HomeScreen;
+export default SettingsScreen;

@@ -7,10 +7,10 @@ import { Menu, LocalLibrary, Explore, Settings } from '@material-ui/icons';
 const DRAWER_WIDTH = 240;
 
 const MENU_ITEMS: (MenuItem|'---')[] = [
-  { id: 'home', title: 'My Library', url: '/main_window', icon: <LocalLibrary /> },
-  { id: 'explore', title: 'Explore', url: '/main_window/explore', icon: <Explore /> },
+  { id: 'home', title: 'My Library', url: '', icon: <LocalLibrary /> },
+  { id: 'explore', title: 'Explore', url: 'explore', icon: <Explore /> },
   '---',
-  { id: 'settings', title: 'Settings', url: '/settings', icon: <Settings /> },
+  { id: 'settings', title: 'Settings', url: 'settings', icon: <Settings /> },
 ];
 
 interface MenuItem {
