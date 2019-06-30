@@ -1,29 +1,14 @@
+// import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-
-import MenuIcon from '@material-ui/icons/Menu';
-import LocalLibrary from '@material-ui/icons/LocalLibrary';
-import Explore from '@material-ui/icons/Explore';
-import Settings from '@material-ui/icons/Settings';
-
-import Link from './Link'
+import { Match, Link, RouteComponentProps } from '@reach/router';
+import { makeStyles, AppBar, Toolbar, Typography, IconButton, Drawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Menu, LocalLibrary, Explore, Settings } from '@material-ui/icons';
 
 const DRAWER_WIDTH = 240;
 
 const MENU_ITEMS: (MenuItem|'---')[] = [
-  { id: 'home', title: 'My Library', url: '/', icon: <LocalLibrary /> },
-  { id: 'explore', title: 'Explore', url: '/explore', icon: <Explore /> },
+  { id: 'home', title: 'My Library', url: '/main_window', icon: <LocalLibrary /> },
+  { id: 'explore', title: 'Explore', url: '/main_window/explore', icon: <Explore /> },
   '---',
   { id: 'settings', title: 'Settings', url: '/settings', icon: <Settings /> },
 ];
@@ -35,11 +20,7 @@ interface MenuItem {
   icon: JSX.Element;
 }
 
-interface LayoutProps extends RouteComponentProps {
-  title: string | null;
-}
-
-const Layout: React.FunctionComponent<LayoutProps> = ({ title, location, children }) => {
+const Layout: React.FunctionComponent<RouteComponentProps> = ({ children }) => {
   const classes = useStyles();
 
   return (
@@ -51,10 +32,10 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ title, location, childre
             color="inherit"
             aria-label="Open drawer"
           >
-            <MenuIcon />
+            <Menu />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap>
-            { title || 'Manga Reader' }
+            Manga Reader
           </Typography>
         </Toolbar>
       </AppBar>
@@ -73,14 +54,18 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ title, location, childre
               return <Divider key={`divider-${idx}`} />;
             } else {
               return (
-                <Link key={item.id} to={item.url}>
-                  <ListItem
-                    button
-                    selected={location.pathname === item.url}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.title} />
-                  </ListItem>
+                <Link key={item.id} to={item.url} className={classes.link}>
+                  <Match path={item.url}>
+                    {({ match }) => (
+                      <ListItem
+                        button
+                        selected={!!match}
+                      >
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemText primary={item.title} />
+                      </ListItem>
+                    )}
+                  </Match>
                 </Link>
               )
             }
@@ -114,6 +99,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   toolbar: theme.mixins.toolbar,
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.text.primary,
+  }
 }));
 
-export default withRouter(Layout);
+export default Layout;

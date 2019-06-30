@@ -1,13 +1,7 @@
 import * as React from 'react';
+import { RouteComponentProps } from '@reach/router';
 
-interface HomeScreenProps {
-  setTitle: Function;
-}
-
-function HomeScreen({ setTitle }: HomeScreenProps) {
-  React.useEffect(() => {
-    setTitle('My Library');
-  })
+function HomeScreen(props: RouteComponentProps) {
 
   return (
     <h1>My Library</h1>
