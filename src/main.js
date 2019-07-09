@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path')
 const os = require('os')
+require('./server/listeners');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -16,6 +17,10 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      nodeIntegration: false,
+      preload: __dirname + '/preload.js',
+    }
   });
 
   // Install React DevTools

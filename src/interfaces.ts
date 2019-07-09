@@ -1,3 +1,10 @@
+import { IpcRenderer } from 'electron';
+
+declare global {
+  interface Window {
+    ipcRenderer: IpcRenderer;
+  }
+}
 
 export interface Site {
   name: string;
@@ -6,7 +13,15 @@ export interface Site {
 
 export interface Manga {
   name: string;
-  status: string;
-  numChapters: number;
+  url: string;
+  image?: string;
+  status?: string;
+  numChapters?: number;
   releaseDate?: Date;
+}
+
+export interface IMangaScraper {
+  parseManga: (url: string) => Promise<Manga>;
+  parsePopular: () => Promise<Manga[]>;
+  search: (query: string) => Promise<Manga[]>;
 }

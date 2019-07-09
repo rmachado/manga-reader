@@ -1,18 +1,16 @@
 import * as React from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { makeStyles, createStyles, Typography, Container, Paper, Grid, FormControl, InputLabel, Select,
-  MenuItem, InputBase, Divider, IconButton } from '@material-ui/core';
+  MenuItem, InputBase, Divider, IconButton, Card, CardHeader, CardMedia, CardContent } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
-
-const MANGA_SITES = [
-  { id: 'mangareader', title: 'Manga Reader' },
-  { id: 'mangapanda', title: 'Manga Panda' },
-];
+import { MANGA_SITES } from '../constants';
+import { useMangaList } from '../hooks/mangaHooks';
+import { Manga } from '../interfaces';
 
 function ExploreScreen(props: RouteComponentProps) {
-  const [siteId, setSiteId] = React.useState(MANGA_SITES[0].id);
   
   const classes = useStyles();
+  const { mangaList, siteId, search, onSearch, setSiteId } = useMangaList();
 
   return (
     <React.Fragment>
@@ -34,10 +32,32 @@ function ExploreScreen(props: RouteComponentProps) {
           </Select>
         </Grid>
         <Grid item xs={6}>
-          <InputBase placeholder="Search" className={classes.input} />
+          <InputBase
+            placeholder="Search"
+            className={classes.input}
+            value={search}
+            onChange={onSearch}
+          />
           <IconButton className={classes.iconButton}>
             <Search />
           </IconButton>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container spacing={5}>
+            { mangaList.map((manga: Manga) => (
+              <Grid item xs={3} key={manga.url}>
+                <Card>
+                  <CardHeader title={manga.name} />
+                  <CardMedia image={manga.image} title={manga.name} className={classes.media} />
+                  <CardContent>
+                    <Typography component="p">
+                      {manga.numChapters} Chapters. ({manga.status})
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
     </React.Fragment>
@@ -63,6 +83,11 @@ const useStyles = makeStyles(
       width: 1,
       height: 28,
       margin: 4,
+    },
+    media: {
+      height: 300,
+      backgroundSize: 'contain'
+      // paddingTop: '56.25%', // 16:9
     },
   }),
 );
