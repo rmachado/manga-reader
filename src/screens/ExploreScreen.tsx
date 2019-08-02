@@ -2,10 +2,11 @@ import * as React from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { makeStyles, createStyles, Typography, Container, Paper, Grid, FormControl, InputLabel, Select,
   MenuItem, InputBase, Divider, IconButton, Card, CardHeader, CardMedia, CardContent } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import SearchIcon from '@material-ui/icons/Search';
 import { MANGA_SITES } from '../constants';
 import { useMangaList } from '../hooks/mangaHooks';
 import { Manga } from '../interfaces';
+import MangaCard from '../components/MangaCard';
 
 function ExploreScreen(props: RouteComponentProps) {
   
@@ -39,22 +40,14 @@ function ExploreScreen(props: RouteComponentProps) {
             onChange={onSearch}
           />
           <IconButton className={classes.iconButton}>
-            <Search />
+            <SearchIcon />
           </IconButton>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={5}>
             { mangaList.map((manga: Manga) => (
               <Grid item xs={3} key={manga.url}>
-                <Card>
-                  <CardHeader title={manga.name} />
-                  <CardMedia image={manga.image} title={manga.name} className={classes.media} />
-                  <CardContent>
-                    <Typography component="p">
-                      {manga.numChapters} Chapters. ({manga.status})
-                    </Typography>
-                  </CardContent>
-                </Card>
+                <MangaCard manga={manga} />
               </Grid>
             ))}
           </Grid>
@@ -84,11 +77,19 @@ const useStyles = makeStyles(
       height: 28,
       margin: 4,
     },
+    card: {
+      cursor: 'pointer',
+      height: 400,
+      overflow: 'hidden',
+    },
     media: {
-      height: 300,
-      backgroundSize: 'contain'
+      maxHeight: 394,
+      overflow: 'hidden'
       // paddingTop: '56.25%', // 16:9
     },
+    image: {
+      width: '100%',
+    }
   }),
 );
 

@@ -22,7 +22,7 @@ export class MangaReaderScraper implements IMangaScraper {
       
       let match = imgStyle.match(/url\('(.+)'\)/);
       if (match) {
-        manga.image = match[1];
+        manga.image = match[1].replace(/-r(\d)\./, '-l$1.');
       }
       
       const details = $('.chapter_count', item).text();
